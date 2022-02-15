@@ -5,6 +5,7 @@ const app = new express();
 
 app.use(express.json());
 
+//Nesse caso, estamos usando um array para armazenar os clientes, ao invés de um banco de dados
 const customers = []
 
 //Middleware
@@ -121,6 +122,22 @@ app.get("/statement/date", verifyIfExistsAccountCPF, (request, response) => {
     statement.created_at.toDateString() === new Date(dateFormat).toDateString());
 
   return response.json(statement);
+});
+
+app.put("/account", verifyIfExistsAccountCPF, (request, response) => {
+  const { name } = request.body;
+  const { customer } = request;
+
+  customer.name = name;
+
+  return response.status(201).send();
+
+});
+
+app.get("/account", verifyIfExistsAccountCPF, (request, response) => {
+  const { customer } = request;
+
+  return response.json(customer);
 });
 
 //localhost:8080
